@@ -1,5 +1,4 @@
 #include <iostream>
-#include <list>
 
 //using namespace std;
 
@@ -8,6 +7,18 @@ struct List
     int data;
     List* next;
 };
+
+void Print(List* list)
+{
+    List* current = list;
+    while (current != NULL)
+    {
+        std::cout << current->data << " ";
+        current = current->next;
+    }
+
+    std::cout << std::endl;
+}
 
 int nth(List* list, int element)
 {
@@ -62,28 +73,43 @@ void removeList(List* list)
     }
 }
 
-void push(List* list, int num)
+List* push(List* list, int num)
 {
     List* newNode = new List;
     newNode->data = num;
 
-    List* tmp = list;
-    while (list->next != NULL)
+    if (list == NULL || list->data >= num)
     {
-        if (list->next->data >= num)
-        {
-            tmp = list->next;
-            list->next = newNode;
-            newNode->next = tmp;
-            break;
-        }
-
-        tmp = list->next;
-        list = list->next;
+        newNode->next = list;
+        return newNode;
     }
+
+    List* current = list;
+
+    while (current->next != NULL && current->next->data < num)
+    {
+        current = current->next;
+    }
+
+    newNode->next = current->next;
+    current->next = newNode;
+    return list;
 }
 
-void sort(List* list)
+List* insertionSort(List* list)
+{
+    List* sorted = NULL;
+
+    while (list != NULL)
+    {
+        sorted = push(sorted, list->data);
+        list = list->next;
+    }
+
+    return sorted;
+}
+
+void bubbleSort(List* list)
 {
     int tmp;
     List* current = list;
@@ -143,62 +169,20 @@ List* convertFromArrayToList(int* arr, int size)
     return res;
 }
 
-void Print(List* list)
+
+int main() 
 {
-    while (list != NULL)
-    {
-	std::cout << list->data << " ";
-	list = list->next;
-    }
+    int size = 5;
+    int arr[] = {3, 1, 2, 5, 4};
+    List* list = convertFromArrayToList(arr, size);
 
-    std::cout << std::endl;
-}
+    Print(list);
 
-int main()
-{
-    List list1;
-    List list2;
-    List list3;
-    List list4;
-    List list6;
-    list1.data = 4;
-    list2.data = 5;
-    list3.data = 6;
-    list4.data = 1;
-    list6.data = 2;
-    list1.next = &list2;
-    list2.next = &list3;
-    list3.next = &list4;
-    list4.next = &list6;
+    list = insertionSort(list);
 
-    list6.next = NULL;
-
-    //List* list4 = add_front(10, &list1);
+    //list = push(list, 0);
     
-    int size = 15;
-    int arr[size];
-
-    for (int i = 0; i < size; ++i)
-    {
-        arr[i] = i;
-    } 
-
-    List* list5 = convertFromArrayToList(arr, size);
-    int sum = sumCount(list5);
-
-    //cout << sum << endl;
-
-    //int elem = nth(list5, 1);
-
-    //push(&list1, 4);
-    //std::cout << elem << std::endl;
-    //removeLastElement(&list1);
-    //append(&list1, list5);
-    sort(&list1);
-    Print(&list1);
-    //Print(list5);
-    //removeList(list5);
-    //Print(list5);
+    Print(list);
 
     return 0;
 }
