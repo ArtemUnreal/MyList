@@ -20,6 +20,15 @@ void Print(List* list)
     std::cout << std::endl;
 }
 
+List* add_front(int element, List* list)
+{
+    List* res = new List;
+    (*res).data = element;
+
+    res->next = list;    
+    return res;    
+}
+
 int nth(List* list, int element)
 {
     int count = 0;
@@ -50,16 +59,6 @@ void removeLastElement(List* list)
     delete list->next;
 }
 
-void append(List* list1, List* list2)
-{
-    while (list1->next != NULL)
-    {
-        list1 = list1->next;
-    }
-
-    list1->next = list2;
-}
-
 void removeList(List* list)
 {
     List* current = list;
@@ -71,6 +70,25 @@ void removeList(List* list)
         delete current;
         current = nxt;
     }
+}
+
+List* append(List* list1, List* list2)
+{
+    if (list1 == NULL)
+    {
+        return list2;
+    }
+
+    List* res = list1;
+
+    while (list1->next != NULL)
+    {
+        list1 = list1->next;
+    }
+
+    list1->next = list2;
+
+    return res;
 }
 
 List* push(List* list, int num)
@@ -93,6 +111,7 @@ List* push(List* list, int num)
 
     newNode->next = current->next;
     current->next = newNode;
+
     return list;
 }
 
@@ -107,6 +126,62 @@ List* insertionSort(List* list)
     }
 
     return sorted;
+}
+
+List* quickSort(List* list)
+{
+    if (list == NULL) 
+    {
+        return list;
+    }
+
+    List* list1;
+    list1 = NULL;
+    List* list2;
+    list2 = NULL;
+    int first_elem = list->data;
+
+    list = list->next;
+
+    while (list != NULL)
+    {
+        if (first_elem <= list->data)
+        {
+            list1 = push(list1, list->data);
+        }
+        else
+        {
+            list2 = push(list2, list->data);
+        }
+
+        list = list->next;
+    }
+    List* delList1 = list1;
+    List* delList2 = list2;
+
+    list1 = quickSort(list1);
+    list2 = quickSort(list2);
+
+    removeList(delList1);
+    removeList(delList2);
+
+    list2 = push(list2, first_elem);
+
+    list1 = append(list2, list1);
+
+    return list1;
+}
+
+void merge(List* list1, List* list2)
+{
+    while (list1->next != NULL && list2->next != NULL)
+    {
+        List* res;
+        if (list1->data < list2->data)
+        {
+            res;
+        }
+    }
 }
 
 void bubbleSort(List* list)
@@ -148,15 +223,6 @@ int sumCount(List* list)
     
 }
 
-List* add_front(int element, List* list)
-{
-    List* res = new List;
-    (*res).data = element;
-
-    res->next = list;    
-    return res;    
-}
-
 List* convertFromArrayToList(int* arr, int size)
 {
     List* res = NULL;
@@ -178,11 +244,21 @@ int main()
 
     Print(list);
 
-    list = insertionSort(list);
+    List* fun = NULL;
 
+    //fun = append(fun, list);
+
+    List* del = list;
+
+    list = quickSort(list);
+    removeList(del);
     //list = push(list, 0);
+
+    std::cout << sizeof(*list) << std::endl;
     
     Print(list);
+
+    removeList(list);
 
     return 0;
 }
