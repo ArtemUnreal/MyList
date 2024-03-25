@@ -1,16 +1,18 @@
 #include <iostream>
+#include <string>
 
 //using namespace std;
-
+template <class T>
 struct List
 {
-    int data;
+    T data;
     List* next;
 };
 
-void Print(List* list)
+template <class T>
+void Print(List<T>* list)
 {
-    List* current = list;
+    List<T>* current = list;
     while (current != NULL)
     {
         std::cout << current->data << " ";
@@ -20,10 +22,11 @@ void Print(List* list)
     std::cout << std::endl;
 }
 
-void removeList(List* list)
+template <class T>
+void removeList(List<T>* list)
 {
-    List* current = list;
-    List* nxt;
+    List<T>* current = list;
+    List<T>* nxt;
 
     while (current != NULL)
     {
@@ -33,16 +36,17 @@ void removeList(List* list)
     }
 }
 
-List* add_front(int element, List* list)
+template <class T>
+List<T>* add_front(T element, List<T>* list)
 {
-    List* res = new List;
+    List<T>* res = new List<T>;
     (*res).data = element;
   
     res->next = list;
     return res;    
 }
 
-int nth(List* list, int element)
+int nth(List<int>* list, int element)
 {
     int count = 0;
 
@@ -60,7 +64,7 @@ int nth(List* list, int element)
     return -1;
 }
 
-void removeLastElement(List* list)
+void removeLastElement(List<int>* list)
 {
     while (list->next->next != NULL)
     {
@@ -72,14 +76,15 @@ void removeLastElement(List* list)
     delete list->next;
 }
 
-List* append(List* list1, List* list2)
+template <class T>
+List<T>* append(List<T>* list1, List<T>* list2)
 {
     if (list1 == NULL)
     {
         return list2;
     }
 
-    List* res = list1;
+    List<T>* res = list1;
 
     while (list1->next != NULL)
     {
@@ -91,9 +96,9 @@ List* append(List* list1, List* list2)
     return res;
 }
 
-List* push(List* list, int num)
+List<int>* push(List<int>* list, int num)
 {
-    List* newNode = new List;
+    List<int>* newNode = new List<int>;
     newNode->data = num;
     newNode->next = NULL;
 
@@ -103,7 +108,7 @@ List* push(List* list, int num)
         return newNode;
     }
 
-    List* current = list;
+    List<int>* current = list;
 
     while (current->next != NULL && current->next->data < num)
     {
@@ -116,9 +121,9 @@ List* push(List* list, int num)
     return list;
 }
 
-List* insertionSort(List* list)
+List<int>* insertionSort(List<int>* list)
 {
-    List* sorted = NULL;
+    List<int>* sorted = NULL;
 
     while (list != NULL)
     {
@@ -129,10 +134,10 @@ List* insertionSort(List* list)
     return sorted;
 }
 
-List* reverseList(List* list)
+List<int>* reverseList(List<int>* list)
 {
-    List* prev = NULL;
-    List* next = NULL;
+    List<int>* prev = NULL;
+    List<int>* next = NULL;
 
     while (list != NULL)
     {
@@ -140,24 +145,22 @@ List* reverseList(List* list)
         list->next = prev;
         prev = list;
         list = next;
-    }
+    }    
 
     return prev;
 }
 
-List* quickSort(List* list)
+List<int>* quickSort(List<int>* list)
 {
     if (list == NULL) 
     {
         return list;
     }
 
-    List* list1;
-    list1 = NULL;
-    List* list2;
-    list2 = NULL;
-    int first_elem = list->data;
+    List<int>* list1 = NULL;
+    List<int>* list2 = NULL;
 
+    int first_elem = list->data;
     list = list->next;
 
     while (list != NULL)
@@ -174,8 +177,8 @@ List* quickSort(List* list)
         list = list->next;
     }
 
-    List* delList1 = list1;
-    List* delList2 = list2;
+    List<int>* delList1 = list1;
+    List<int>* delList2 = list2;
 
     list1 = quickSort(list1);
     list2 = quickSort(list2);
@@ -189,14 +192,14 @@ List* quickSort(List* list)
     list1 = reverseList(list1);
 
     list2 = append(list2, list1);
-
-    //list1 = reverseList(list1);
-    return reverseList(list2);
+    list2 = reverseList(list2);
+   
+    return list2;
 }
 
-List* merge(List* list1, List* list2)
+List<int>* merge(List<int>* list1, List<int>* list2)
 {
-    List* res = NULL;
+    List<int>* res = NULL;
 
     while (list1 != NULL && list2 != NULL)
     {
@@ -230,11 +233,12 @@ List* merge(List* list1, List* list2)
     }
 
     res = reverseList(res);
-
+   
     return res;
 }
 
-int len(List* list)
+template <class T>
+int len(List<T>* list)
 {
     int res = 0;
 
@@ -247,7 +251,7 @@ int len(List* list)
     return res;
 }
 
-List* mergeSort(List* list)
+List<int>* mergeSort(List<int>* list)
 {
     if (list == NULL) 
     {
@@ -256,7 +260,7 @@ List* mergeSort(List* list)
 
     if (list->next == NULL)
     {
-        list = add_front(list->data, NULL);
+        list = add_front<int>(list->data, NULL);
         return list;
     }
 
@@ -264,8 +268,8 @@ List* mergeSort(List* list)
     int half = sz / 2;
     int count = 0;
 
-    List* list1 = NULL;
-    List* list2 = NULL;
+    List<int>* list1 = NULL;
+    List<int>* list2 = NULL;
 
     while (count < half)
     {
@@ -280,8 +284,8 @@ List* mergeSort(List* list)
         list = list->next;
         ++count;
     }
-    List* del1 = list1;
-    List* del2 = list2;
+    List<int>* del1 = list1;
+    List<int>* del2 = list2;
     list1 = mergeSort(list1);
     list2 = mergeSort(list2);
 
@@ -291,7 +295,7 @@ List* mergeSort(List* list)
     del1 = list1;
     del2 = list2;
 
-    List* res = merge(list1, list2);
+    List<int>* res = merge(list1, list2);
 
     removeList(del1);
     removeList(del2);
@@ -299,11 +303,11 @@ List* mergeSort(List* list)
     return res;
 }
 
-void bubbleSort(List* list)
+void bubbleSort(List<int>* list)
 {
     int tmp;
-    List* current = list;
-    List* next;
+    List<int>* current = list;
+    List<int>* next;
 
     while (current != NULL) 
     {
@@ -325,7 +329,7 @@ void bubbleSort(List* list)
     }
 }
 
-int sumCount(List* list)
+int sumCount(List<int>* list)
 {
     int result = 0;
     while (list != NULL)
@@ -338,9 +342,9 @@ int sumCount(List* list)
     
 }
 
-List* convertFromArrayToList(int* arr, int size)
+List<int>* convertFromArrayToList(int* arr, int size)
 {
-    List* res = NULL;
+    List<int>* res = NULL;
     
     for (int i = size - 1; i >= 0 ; --i)
     {  
@@ -350,45 +354,95 @@ List* convertFromArrayToList(int* arr, int size)
     return res;
 }
 
+List<std::string>* convertFromStringToList(std::string s)
+{
+    List<std::string>* res = NULL;
+
+    res = add_front(s, res);
+
+    return res;
+}
+
+List<std::string>* perStr(std::string str) 
+{
+    if (str.length() <= 1) 
+    {
+        List<std::string>* result = new List<std::string>;
+        result->next = NULL;
+        result->data = str;
+        return result;
+    }
+
+    List<std::string>* result = NULL;
+
+    for (int i = 0; i < str.length(); i++) 
+    {
+        std::string sub1 = str.substr(0, i);
+        std::string sub2 = str.substr(i + 1);
+
+        List<std::string>* temp = perStr(sub1 + sub2);
+        List<std::string>* delTemp = temp;
+
+        while (temp != NULL) 
+        {
+            result = add_front(str[i] + temp->data, result);
+            temp = temp->next;
+        }
+
+        removeList(delTemp);
+    }
+
+    return result;
+}
+
+List<std::string>* perSticks(std::string str)
+{
+    if (str.length() < 2) 
+    {
+        List<std::string>* result = new List<std::string>;
+        result->next = NULL;
+        result->data = str;
+        return result;
+    }
+
+    List<std::string>* result = new List<std::string>;
+    result->data = str;
+    result->next = NULL;
+
+    for (int i = 1; i < str.length(); i++) 
+    {
+        std::string sub_left = str.substr(0, i);
+        std::string sub_right = str.substr(i);
+        List<std::string>* temp = perSticks(sub_right);
+        List<std::string>* delTemp = temp;
+
+        while (temp != NULL)
+        {
+            result = add_front(sub_left + "|" + temp->data, result);
+            temp = temp->next;
+        }
+        removeList(delTemp);
+    }
+
+    return result;
+}
+
 
 int main() 
 {
-    int size = 8;
-    int arr[] = {3, 1, 2, 5, 4, 8, 7, 6};
-    List* list = convertFromArrayToList(arr, size);
-
-    int size_ = 3;
-    int arr_[] = {8, 7, 6};
-    List* list2 = convertFromArrayToList(arr_, size_);
-
-    //Print(list);
-
-    //list = reverseList(list);
+    std::string str = "abc";
+    
+    List<std::string>* list = convertFromStringToList(str);
 
     Print(list);
-    //Print(list2);
 
-    //List* fun = NULL;
+    List<std::string>* delList = list;
+    list = perSticks(str);
+    removeList(delList);
 
-    //fun = append(fun, list);
-
-    List* del = list;
-    list = quickSort(list);
-    //list = quickSort(list);
-    removeList(del);
-    //list = push(list, 0);
-
-    removeList(list2);
-
-    //list = removeFirstElement(list);
-
-    //std::cout << sizeof(*list) << std::endl;
-    
-    Print(reverseList(list));
-
+    Print(list);
     removeList(list);
 
-    //removeList(list);
 
     return 0;
 }
